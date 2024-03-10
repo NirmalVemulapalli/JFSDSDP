@@ -22,10 +22,9 @@ const Header = () => {
           >
             <Tab LinkComponent={NavLink} to="/SignUp" label="SignUp" />
             <Tab LinkComponent={NavLink} to="/SignIn" label="SignIn" />
-            {/* <Tab LinkComponent={NavLink} to="/Counsellor" label="Counsellor" />
-            <Tab LinkComponent={NavLink} to="/Visitor" label="Visitor" />
-            <Tab LinkComponent={NavLink} to="/Appointment" label="Appointment" />
-            <Tab LinkComponent={NavLink} to="/AboutUs" label="AboutUs" /> */}
+            <Tab LinkComponent={NavLink} to="/Student" label="Student" />
+            <Tab LinkComponent={NavLink} to="/Courses" label="Courses" />
+            <Tab LinkComponent={NavLink} to="/About" label="About" />
           </Tabs>
         </Toolbar>
       </AppBar>

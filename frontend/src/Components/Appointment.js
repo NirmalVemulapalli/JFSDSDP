@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './Appointment.css';
 
 const Appointment = () => {
   const [name, setName] = useState('');
@@ -6,13 +7,13 @@ const Appointment = () => {
   const [time, setTime] = useState('');
   const [isAppointmentBooked, setIsAppointmentBooked] = useState(false);
 
-  const handleFormSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Implement logic to handle the appointment submission
-    console.log('Appointment submitted:', { name, date, time });
-    
-    // For simplicity, just set isAppointmentBooked to true
+    console.log('Name:', name);
+    console.log('Date:', date);
+    console.log('Time:', time);
     setIsAppointmentBooked(true);
+    // Additional logic for handling the submission can be added here
   };
 
   return (
@@ -26,7 +27,7 @@ const Appointment = () => {
           <p>Time: {time}</p>
         </div>
       ) : (
-        <form onSubmit={handleFormSubmit}>
+        <form onSubmit={handleSubmit}>
           <label htmlFor="name">Your Name:</label>
           <input
             type="text"

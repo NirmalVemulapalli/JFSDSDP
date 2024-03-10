@@ -15,15 +15,15 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-
+import Select from '@mui/material/Select';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 function Copyright(props) {
   return (
-    
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+        <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://www.kluniversity.in/">
+        KL UNIVERSITY
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -36,19 +36,30 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  
+
+  const navigate=useNavigate()
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       name: data.get('name'),
-      Role: data.get('Role'),
+      role: data.get('role'),
       email: data.get('email'),
-      password: data.get('password'),
+      password: data.get('password')
     });
+    axios.post('http://localhost:8080/register',{
+      name: data.get('name'),
+      role: data.get('role'),
+      email: data.get('email'),
+      password: data.get('password')
+
+    }).then(res=>{
+      console.log(res.data)
+    })
+    navigate('/sucess')
 
   };
-  const [Role, setRole] = React.useState('');
+  const [role, setRole] = React.useState('');
 
   const handleChange = (event) => {
     setRole(event.target.value);
@@ -92,15 +103,15 @@ export default function SignUp() {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          name='Role'
-          value={Role}
+          name='role'
+          value={role}
           label="Role"
           onChange={handleChange}
         >
           <MenuItem value={1}>Student</MenuItem>
           <MenuItem value={2}>Visitor</MenuItem>
-          <MenuItem value={3}>admin</MenuItem>
-          <MenuItem value={4}>Counsellor</MenuItem>
+          <MenuItem value={3}>Management</MenuItem>
+          <MenuItem value={3}>Counseller</MenuItem>
         </Select>
       </FormControl>
     </Box>

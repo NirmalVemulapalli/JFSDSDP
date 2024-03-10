@@ -1,0 +1,50 @@
+/* styles.css */
+
+.timetable-container {
+    margin-top: 20px;
+  }
+  
+  .timetable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .timetable th,
+  .timetable td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle; /* Align content vertically in the middle */
+  }
+  
+  .timetable th {
+    background-color: #f2f2f2;
+  }
+  
+  .timetable tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .timetable tr:hover {
+    background-color: #ddd;
+  }
+  
+  .registered-courses {
+    margin: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  .registered-courses table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .registered-courses th,
+  .registered-courses td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle; /* Align content vertically in the middle */
+  }
+  
