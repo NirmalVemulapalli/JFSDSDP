@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,36 +15,46 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
+function isValidEmail(email) {
+  // Email validation regex
+  const regex = /\S+@\S+\.\S+/;
+  return regex.test(email);
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
+const darkRedTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#8b0000', // Dark red color
+    },
+  },
+});
 
-const defaultTheme = createTheme();
+function SignIn() {
+  const [emailError, setEmailError] = useState(false);
+  const navigate = useNavigate(); // Use useNavigate hook for navigation
 
-export default function SignIn() {
   const handleSubmit = (event) => {
-    
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const email = data.get('email');
+
+    // Validate email format
+    if (!isValidEmail(email)) {
+      setEmailError(true);
+      return;
+    }
+
     console.log({
-      email: data.get('email'),
+      email: email,
       password: data.get('password'),
     });
+
+    // Redirect to Student page after successful sign-in
+    navigate('/Student');
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={darkRedTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -61,6 +73,8 @@ export default function SignIn() {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
+              error={emailError}
+              helperText={emailError ? 'Please enter a valid email' : ''}
               margin="normal"
               required
               fullWidth
@@ -99,15 +113,16 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link href="/signup" variant="body2">
+                  Don't have an account? Sign Up
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
 }
+
+export default SignIn;

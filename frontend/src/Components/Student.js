@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Student.css'; // Import CSS file
+import axios from 'axios'; // Import axios for making HTTP requests
 
 const Student = () => {
   const [studentDetails, setStudentDetails] = useState({
@@ -14,6 +15,11 @@ const Student = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    // Ensure semester value is between 1 and 8
+    if (name === 'semester' && (value < 1 || value > 8)) {
+      // You can add error handling here, like showing an error message
+      return;
+    }
     setStudentDetails(prevState => ({
       ...prevState,
       [name]: value
@@ -23,6 +29,15 @@ const Student = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormSubmitted(true);
+
+    // Send studentDetails to MongoDB
+    axios.post('http://localhost:8085/Students', studentDetails) // Adjust the URL to your server endpoint
+      .then(response => {
+        console.log('Student details submitted successfully:', response.data);
+      })
+      .catch(error => {
+        console.error('Error submitting student details:', error);
+      });
   };
 
   return (
@@ -75,7 +90,14 @@ const Student = () => {
                 </tr>
                 <tr>
                   <td><label htmlFor="semester">Semester:</label></td>
-                  <td><input type="text" id="semester" name="semester" value={studentDetails.semester} onChange={handleChange} required /></td>
+                  <td>
+                    <select id="semester" name="semester" value={studentDetails.semester} onChange={handleChange} required>
+                      <option value="">Select Semester</option>
+                      {[1, 2, 3, 4, 5, 6, 7, 8].map((semester) => (
+                        <option key={semester} value={semester}>{semester}</option>
+                      ))}
+                    </select>
+                  </td>
                 </tr>
               </tbody>
             </table>

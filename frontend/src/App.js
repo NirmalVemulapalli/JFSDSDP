@@ -4,7 +4,7 @@ import React from 'react';
 import SignIn from './Components/SignIn'
 import SignUp from './Components/SignUp'
 import Visitor from './Components/Visitor'
-import Counsellor from './Components/Counsellor'
+import Counsellor from './Components/Counsellor';
 import Home from './Components/Home'
 import Student from './Components/Student'
 import Courses from './Components/Courses'

@@ -18,13 +18,13 @@ const FetchRegistrations = () => {
     }, 
     [])
 const updateData=async (id)=>{ 
-const res=await axios.put(`http://localhost:8080/users/${id}`,formData)
+const res=await axios.put(`http://localhost:8085/users/${id}`,formData)
 fetchData()
 console.log(res.data)
     
 }
 const handleDelete = async (id)=>{
-  await axios.delete(`http://localhost:8080/users/${id}`)
+  await axios.delete(`http://localhost:8085/users/${id}`)
   .then((response)=>{
     console.log(response.data)
   })

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import Timetable from './Timetable'; // Import the Timetable component
+import './Courses.css'; // Import the CSS file for styling
 
 const Courses = () => {
   const [year, setYear] = useState('');
   const [semester, setSemester] = useState('');
   const [availableCourses, setAvailableCourses] = useState([]);
   const [selectedCourses, setSelectedCourses] = useState([]);
-  const [showTimetable, setShowTimetable] = useState(false); // New state to toggle timetable visibility
+  const [step, setStep] = useState(1); // Add state to manage steps
 
   const handleYearChange = (e) => {
     setYear(e.target.value);
@@ -93,11 +94,18 @@ const Courses = () => {
         ]);
       }
     }
+    setStep(2); // Move to step 2 after submitting year and semester
   };
 
   const handleRegister = (course) => {
-    setSelectedCourses([...selectedCourses, course]);
-    setShowTimetable(false); // Reset showTimetable state to false when registering a new course
+    if (!selectedCourses.find((c) => c.code === course.code)) {
+      setSelectedCourses([...selectedCourses, course]);
+    }
+  };
+
+  const handleRemove = (courseCode) => {
+    const updatedCourses = selectedCourses.filter((course) => course.code !== courseCode);
+    setSelectedCourses(updatedCourses);
   };
 
   const handleReset = () => {
@@ -105,43 +113,45 @@ const Courses = () => {
     setSemester('');
     setAvailableCourses([]);
     setSelectedCourses([]);
-    setShowTimetable(false); // Reset showTimetable state to false when resetting the form
+    setStep(1); // Reset step to 1 when resetting the form
   };
 
   const handleViewTimetable = () => {
-    setShowTimetable(true); // Set the state to true to show the timetable
+    setStep(3); // Move to step 3 to view timetable
   };
 
   return (
-    <div>
-      <h2>Courses</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="year">Select Year:</label>
-          <select id="year" value={year} onChange={handleYearChange} required>
-            <option value="">Select Year</option>
-            <option value="1">Year 1</option>
-            <option value="2">Year 2</option>
-            <option value="3">Year 3</option>
-            <option value="4">Year 4</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="semester">Select Semester:</label>
-          <select id="semester" value={semester} onChange={handleSemesterChange} required>
-            <option value="">Select Semester</option>
-            <option value="1">Semester 1</option>
-            <option value="2">Semester 2</option>
-          </select>
-        </div>
-        <button type="submit">Submit</button>
-        <button type="reset" onClick={handleReset}>Reset</button>
-      </form>
+    <div className="container red-theme">
+      <h2 className="center-content">Courses</h2>
+      {step === 1 && (
+        <form className="light-red-background" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="year">Select Year:</label>
+            <select id="year" value={year} onChange={handleYearChange} required>
+              <option value="">Select Year</option>
+              <option value="1">Year 1</option>
+              <option value="2">Year 2</option>
+              <option value="3">Year 3</option>
+              <option value="4">Year 4</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="semester">Select Semester:</label>
+            <select id="semester" value={semester} onChange={handleSemesterChange} required>
+              <option value="">Select Semester</option>
+              <option value="1">Semester 1</option>
+              <option value="2">Semester 2</option>
+            </select>
+          </div>
+          <button className="submit-btn red-btn" type="submit">Submit</button>
+          <button className="reset-btn red-btn" type="reset" onClick={handleReset}>Reset</button>
+        </form>
+      )}
       
-      {(year !== '' && semester !== '') && ( // Render if year and semester are selected
+      {step === 2 && availableCourses.length > 0 && (
         <div>
-          <h3>Available Courses for Semester {semester}:</h3>
-          <table>
+          <h3 className="center-content">Available Courses for Semester {semester}:</h3>
+          <table className="center-content">
             <thead>
               <tr>
                 <th>Course</th>
@@ -152,28 +162,35 @@ const Courses = () => {
               {availableCourses.map((course, index) => (
                 <tr key={index}>
                   <td>{course.name} ({course.code})</td>
-                  <td><button onClick={() => handleRegister(course)}>Register</button></td>
+                  <td>
+                    {selectedCourses.find((c) => c.code === course.code) ? (
+                      <button className="remove-btn red-btn" onClick={() => handleRemove(course.code)}>Remove</button>
+                    ) : (
+                      <button className="register-btn red-btn" onClick={() => handleRegister(course)}>Register</button>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          <button className="submit-btn red-btn" onClick={handleViewTimetable}>Submit Course Selection</button>
         </div>
       )}
       
-      {selectedCourses.length > 0 && (
+      {step === 3 && selectedCourses.length > 0 && (
         <div>
-          <h3>Selected Courses:</h3>
-          <ul>
+          <h3 className="center-content">Selected Courses:</h3>
+          <ul className="center-content">
             {selectedCourses.map((course, index) => (
               <li key={index}>{course.name} ({course.code})</li>
             ))}
           </ul>
-          <button onClick={handleViewTimetable}>View Timetable</button>
+          <button className="submit-btn red-btn" onClick={handleViewTimetable}>View Timetable</button>
         </div>
       )}
 
-      {/* Conditionally render the Timetable component */}
-      {showTimetable && <Timetable selectedCourses={selectedCourses} />}
+      {/* Render the Timetable component in step 3 */}
+      {step === 3 && <Timetable selectedCourses={selectedCourses} />}
     </div>
   );
 };
