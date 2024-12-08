@@ -1,22 +1,21 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function isValidEmail(email) {
-  // Email validation regex
   const regex = /\S+@\S+\.\S+/;
   return regex.test(email);
 }
@@ -24,33 +23,45 @@ function isValidEmail(email) {
 const darkRedTheme = createTheme({
   palette: {
     primary: {
-      main: '#8b0000', // Dark red color
+      main: '#8b0000',
     },
   },
 });
 
 function SignIn() {
   const [emailError, setEmailError] = useState(false);
-  const navigate = useNavigate(); // Use useNavigate hook for navigation
+  const [role, setRole] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get('email');
 
-    // Validate email format
     if (!isValidEmail(email)) {
       setEmailError(true);
+      return;
+    }
+
+    if (!role) {
+      alert('Please select a role.');
       return;
     }
 
     console.log({
       email: email,
       password: data.get('password'),
+      role: role,
     });
 
-    // Redirect to Student page after successful sign-in
-    navigate('/Student');
+    // Navigate to the role-specific page
+    if (role === 'admin') {
+      navigate('/admin-dashboard');
+    } else if (role === 'educator') {
+      navigate('/educator-dashboard');
+    } else if (role === 'citizen') {
+      navigate('/citizen-dashboard');
+    }
   };
 
   return (
@@ -94,10 +105,20 @@ function SignIn() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+            <FormControl fullWidth sx={{ mt: 2 }}>
+              <InputLabel id="role-label">Select Role</InputLabel>
+              <Select
+                labelId="role-label"
+                id="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                required
+              >
+                <MenuItem value="admin">Admin</MenuItem>
+                <MenuItem value="educator">Educator</MenuItem>
+                <MenuItem value="citizen">Citizen</MenuItem>
+              </Select>
+            </FormControl>
             <Button
               type="submit"
               fullWidth
@@ -106,18 +127,6 @@ function SignIn() {
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/signup" variant="body2">
-                  Don't have an account? Sign Up
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
       </Container>

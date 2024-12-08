@@ -1,0 +1,15 @@
+/* styles.css */
+.red-button {
+    background-color: #ff0000; /* Red background */
+    color: #fff; /* White text color */
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 5px;
+  }
+  
+  .red-button:hover {
+    background-color: #cc0000; /* Slightly darker red on hover */
+  }
+  

@@ -12,7 +12,7 @@ const Header = () => {
         <Toolbar>
 
           <AccountBalanceIcon />
-          <Typography sx={{ flexGrow: 1 }}>Online TimeTable Management</Typography>
+          <Typography sx={{ flexGrow: 1 }}>Indian Constitution</Typography>
           <Tabs
             textColor="inherit"
             indicatorColor="secondary"
@@ -21,9 +21,7 @@ const Header = () => {
           >
             <Tab LinkComponent={NavLink} to="/SignUp" label="SignUp" />
             <Tab LinkComponent={NavLink} to="/SignIn" label="SignIn" />
-            <Tab LinkComponent={NavLink} to="/Student" label="Student" />
-            <Tab LinkComponent={NavLink} to="/Counsellor" label="Counsellor" />
-            <Tab LinkComponent={NavLink} to="/Courses" label="Courses" />
+            <Tab LinkComponent={NavLink} to="/contactus" label="Contact Us" />
             <Tab LinkComponent={NavLink} to="/About" label="About" />
           </Tabs>
         </Toolbar>

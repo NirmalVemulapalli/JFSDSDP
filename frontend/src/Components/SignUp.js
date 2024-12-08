@@ -34,8 +34,9 @@ const DarkRedContainer = ({ children }) => (
 export default function SignUp() {
   const navigate = useNavigate();
   const [role, setRole] = React.useState('');
-  const [isSignedUp, setIsSignedUp] = React.useState(false); // State variable to track signup status
+  const [isSignedUp, setIsSignedUp] = React.useState(false); // State to track signup status
 
+  // Handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -45,30 +46,32 @@ export default function SignUp() {
     const emailRegex = /\S+@\S+\.\S+/;
     if (!emailRegex.test(email)) {
       alert('Please enter a valid email address.');
-      return; // Stop the signup process if the email format is incorrect
+      return; // Stop the signup process if email is invalid
     }
 
-    console.log({
+    // Prepare the data to send to the server
+    const jsonData = {
       name: data.get('name'),
       role: data.get('role'),
-      email: email, // Use the validated email
-      password: data.get('password')
-    });
+      email: email, // Validated email
+      password: data.get('password'),
+    };
 
-    axios.post('http://localhost:8085/register', {
-      name: data.get('name'),
-      role: data.get('role'),
-      email: email, // Use the validated email
-      password: data.get('password')
-    }).then(res => {
-      console.log(res.data);
-      setIsSignedUp(true); // Set signup status to true
-      navigate('/SignIn'); // Navigate to SignIn page after successful sign-up
-    }).catch(error => {
-      console.error('Error:', error);
-    });
+    console.log(jsonData);
+
+    // Send the data to the server using Axios
+    axios.post('http://localhost:8085/register', jsonData)
+      .then(res => {
+        console.log(res.data);
+        setIsSignedUp(true); // Update signup status to true
+        navigate('/SignIn'); // Redirect to SignIn page
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   };
 
+  // Handle role change
   const handleChange = (event) => {
     setRole(event.target.value);
   };
@@ -99,7 +102,7 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          {!isSignedUp ? ( // Conditionally render the signup form if not signed up
+          {!isSignedUp ? ( // Show signup form if not signed up
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
@@ -119,7 +122,7 @@ export default function SignUp() {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      name='role'
+                      name="role"
                       value={role}
                       label="Role"
                       onChange={handleChange}
@@ -170,7 +173,7 @@ export default function SignUp() {
                 </Grid>
               </Grid>
             </Box>
-          ) : ( // Render success message if signed up
+          ) : ( // Show success message after successful signup
             <Typography variant="h6" align="center">
               Successfully signed up!
             </Typography>

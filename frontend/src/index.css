@@ -1,11 +1,14 @@
+/* App.css */
 body {
-  margin: 0;
+  background-color: #ffe6e6; /* Light red theme */
+  margin: 0; /* Ensure consistent styling */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    sans-serif; /* Preferred font stack */
+  -webkit-font-smoothing: antialiased; /* Smooth fonts for WebKit browsers */
+  -moz-osx-font-smoothing: grayscale; /* Smooth fonts for Firefox on macOS */
 }
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

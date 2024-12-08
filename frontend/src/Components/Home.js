@@ -1,10 +1,6 @@
 import React from 'react'
 import Hello from './Hello'
 import Greet from './Greet'
-import Message from './Message'
-import Counter from './Counter'
-import ProductList from './ProductList'
-import TodoList from './TodoList';
 import Datafetch from './DataFetch';
 const Home = () => {
 
