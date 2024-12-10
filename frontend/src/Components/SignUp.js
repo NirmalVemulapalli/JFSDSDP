@@ -19,90 +19,91 @@ import Select from '@mui/material/Select';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const DarkRedButton = ({ children, ...props }) => (
-  <Button {...props} variant="contained" sx={{ bgcolor: '#8b0000', color: 'white', mt: 3, mb: 2 }}>
-    {children}
-  </Button>
-);
-
-const DarkRedContainer = ({ children }) => (
-  <Container component="main" maxWidth="xs" sx={{ bgcolor: '#f7d0d0', borderRadius: '10px', p: 3 }}>
-    {children}
-  </Container>
-);
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#8b0000', // Admin dashboard color
+    },
+    background: {
+      default: '#f5f5f5', // Match Admin Dashboard background
+    },
+  },
+});
 
 export default function SignUp() {
   const navigate = useNavigate();
   const [role, setRole] = React.useState('');
-  const [isSignedUp, setIsSignedUp] = React.useState(false); // State to track signup status
+  const [passwordError, setPasswordError] = React.useState(false);
+  const [isSignedUp, setIsSignedUp] = React.useState(false);
 
-  // Handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get('email');
+    const password = data.get('password');
+    const confirmPassword = data.get('confirmPassword');
 
-    // Email format validation using regular expression
     const emailRegex = /\S+@\S+\.\S+/;
     if (!emailRegex.test(email)) {
       alert('Please enter a valid email address.');
-      return; // Stop the signup process if email is invalid
+      return;
     }
 
-    // Prepare the data to send to the server
+    if (password !== confirmPassword) {
+      setPasswordError(true);
+      return;
+    }
+
     const jsonData = {
       name: data.get('name'),
-      role: data.get('role'),
-      email: email, // Validated email
-      password: data.get('password'),
+      role: role,
+      email: email,
+      password: password,
     };
 
-    console.log(jsonData);
-
-    // Send the data to the server using Axios
-    axios.post('http://localhost:8085/register', jsonData)
-      .then(res => {
-        console.log(res.data);
-        setIsSignedUp(true); // Update signup status to true
-        navigate('/SignIn'); // Redirect to SignIn page
+    axios
+      .post('http://localhost:8085/register', jsonData)
+      .then((res) => {
+        setIsSignedUp(true);
+        navigate('/SignIn');
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error:', error);
       });
   };
 
-  // Handle role change
   const handleChange = (event) => {
     setRole(event.target.value);
   };
 
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#8b0000', // Dark red color
-      },
-    },
-  });
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <DarkRedContainer>
-        <Box
+      <Box
+        sx={{
+          backgroundColor: '#f7e6e6', // Match Admin Dashboard color
+          minHeight: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Container
+          maxWidth="xs"
           sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            backgroundColor: '#ffffff',
+            borderRadius: '15px', // Rounded edges
+            boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)', // Add shadow
+            padding: '20px',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          {!isSignedUp ? ( // Show signup form if not signed up
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign Up
+            </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
@@ -118,19 +119,18 @@ export default function SignUp() {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                    <InputLabel id="role-label">Role</InputLabel>
                     <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
+                      labelId="role-label"
+                      id="role"
                       name="role"
                       value={role}
-                      label="Role"
                       onChange={handleChange}
+                      required
                     >
-                      <MenuItem value={1}>Student</MenuItem>
-                      <MenuItem value={2}>Visitor</MenuItem>
-                      <MenuItem value={3}>Management</MenuItem>
-                      <MenuItem value={4}>Counsellor</MenuItem>
+                      <MenuItem value="admin">Admin</MenuItem>
+                      <MenuItem value="educator">Educator</MenuItem>
+                      <MenuItem value="citizen">Citizen</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -152,7 +152,18 @@ export default function SignUp() {
                     label="Password"
                     type="password"
                     id="password"
-                    autoComplete="new-password"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="confirmPassword"
+                    label="Confirm Password"
+                    type="password"
+                    id="confirmPassword"
+                    error={passwordError}
+                    helperText={passwordError ? 'Passwords do not match' : ''}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -162,9 +173,19 @@ export default function SignUp() {
                   />
                 </Grid>
               </Grid>
-              <DarkRedButton type="submit" fullWidth>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  bgcolor: '#8b0000',
+                  '&:hover': { bgcolor: '#a00000' },
+                }}
+              >
                 Sign Up
-              </DarkRedButton>
+              </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   <Link href="/SignIn" variant="body2">
@@ -173,13 +194,9 @@ export default function SignUp() {
                 </Grid>
               </Grid>
             </Box>
-          ) : ( // Show success message after successful signup
-            <Typography variant="h6" align="center">
-              Successfully signed up!
-            </Typography>
-          )}
-        </Box>
-      </DarkRedContainer>
+          </Box>
+        </Container>
+      </Box>
     </ThemeProvider>
   );
 }

@@ -31,19 +31,32 @@ const ContactUs = () => {
         alignItems: 'center',
         height: '100vh',
         textAlign: 'center',
-        backgroundColor: '#f4f4f4',
+        backgroundColor: '#f7e6e6', // Background color
+        fontFamily: 'Arial, sans-serif',
       }}
     >
-      <div style={{ padding: "20px", backgroundColor: "#fff", borderRadius: "8px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
-        <h2>Contact Us</h2>
-        <p>If you have any questions or feedback, feel free to reach out to us!</p>
-        <p>
+      <div
+        style={{
+          padding: "20px",  // Reduced padding
+          backgroundColor: "#ffffff",
+          borderRadius: "15px", // Rounded edges
+          boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.1)", // Soft shadow effect
+          width: "100%",
+          maxWidth: "450px", // Reduced width for smaller form
+          transition: 'transform 0.3s ease',
+        }}
+      >
+        <h2 style={{ color: '#f44336', marginBottom: '10px' }}>Contact Us</h2>
+        <p style={{ fontSize: '16px', color: '#555' }}>
+          If you have any questions or feedback, feel free to reach out to us!
+        </p>
+        <p style={{ fontWeight: 'bold', color: '#333' }}>
           <strong>Email:</strong> indianConstitution@gmail.com
         </p>
-        <h3>Send Us a Message</h3>
-        <form onSubmit={handleSubmit} style={{ maxWidth: "600px", marginTop: "20px" }}>
+        <h3 style={{ marginTop: '20px', color: '#333' }}>Send Us a Message</h3>
+        <form onSubmit={handleSubmit} style={{ marginTop: '15px' }}>
           <div style={{ marginBottom: "15px" }}>
-            <label>
+            <label style={{ fontSize: '16px', color: '#333' }}>
               Name:
               <input
                 type="text"
@@ -53,15 +66,22 @@ const ContactUs = () => {
                 required
                 style={{
                   width: "100%",
-                  padding: "8px",
-                  marginTop: "5px",
-                  borderRadius: "4px",
+                  padding: "10px",  // Reduced padding
+                  marginTop: "6px",  // Reduced margin
+                  borderRadius: "8px",
+                  border: "1px solid #ddd",
+                  fontSize: "16px",
+                  color: "#555",
+                  outline: "none",
+                  transition: 'border 0.3s ease',
                 }}
+                onFocus={(e) => e.target.style.borderColor = '#f44336'}
+                onBlur={(e) => e.target.style.borderColor = '#ddd'}
               />
             </label>
           </div>
           <div style={{ marginBottom: "15px" }}>
-            <label>
+            <label style={{ fontSize: '16px', color: '#333' }}>
               Email:
               <input
                 type="email"
@@ -71,47 +91,66 @@ const ContactUs = () => {
                 required
                 style={{
                   width: "100%",
-                  padding: "8px",
-                  marginTop: "5px",
-                  borderRadius: "4px",
+                  padding: "10px",  // Reduced padding
+                  marginTop: "6px",  // Reduced margin
+                  borderRadius: "8px",
+                  border: "1px solid #ddd",
+                  fontSize: "16px",
+                  color: "#555",
+                  outline: "none",
+                  transition: 'border 0.3s ease',
                 }}
+                onFocus={(e) => e.target.style.borderColor = '#f44336'}
+                onBlur={(e) => e.target.style.borderColor = '#ddd'}
               />
             </label>
           </div>
           <div style={{ marginBottom: "15px" }}>
-            <label>
+            <label style={{ fontSize: '16px', color: '#333' }}>
               Message:
               <textarea
                 name="message"
                 value={formData.message}
                 onChange={handleInputChange}
                 required
-                rows="4"
+                rows="5"  // Reduced row size
                 style={{
                   width: "100%",
-                  padding: "8px",
-                  marginTop: "5px",
-                  borderRadius: "4px",
+                  padding: "10px",  // Reduced padding
+                  marginTop: "6px",  // Reduced margin
+                  borderRadius: "8px",
+                  border: "1px solid #ddd",
+                  fontSize: "16px",
+                  color: "#555",
+                  outline: "none",
+                  transition: 'border 0.3s ease',
                 }}
+                onFocus={(e) => e.target.style.borderColor = '#f44336'}
+                onBlur={(e) => e.target.style.borderColor = '#ddd'}
               />
             </label>
           </div>
           <button
             type="submit"
             style={{
-              backgroundColor: "#f44336", // Red color for the button
+              backgroundColor: "#f7e6e6",
               color: "white",
-              padding: "10px 20px",
+              padding: "10px 20px",  // Reduced padding
               border: "none",
-              borderRadius: "4px",
+              borderRadius: "8px",
               cursor: "pointer",
+              fontSize: "16px",
+              width: "100%",
+              transition: 'background-color 0.3s ease',
             }}
+            onMouseOver={(e) => e.target.style.backgroundColor = '#d32f2f'}
+            onMouseOut={(e) => e.target.style.backgroundColor = '#f44336'}
           >
             Send Message
           </button>
         </form>
         {successMessage && (
-          <div style={{ marginTop: "20px", color: "green" }}>
+          <div style={{ marginTop: "15px", color: "green", fontSize: '16px' }}>
             <h4>{successMessage}</h4>
           </div>
         )}
